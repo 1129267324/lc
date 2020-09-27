@@ -12,5 +12,5 @@ source devel/setup.bash
 roslaunch test1 navigation1.launch
 
 2 直接基于小车驱动autolabor，velodyne与move_base包进行避障，简称无图下的避障，去除了map与amcl，从官网move_base介绍中可以发现，其属于可选项
-1)其对应导入的move_base中的参数为test包中的param
+1)其对应导入的move_base中的参数为test包中的param_no_map
 roslaunch test1 navigation11.launch
