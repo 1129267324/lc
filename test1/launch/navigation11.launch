@@ -9,7 +9,7 @@
     <param name="robot_description" textfile="$(find autolabor_description)/urdf/autolabor_pro1.urdf" />
    <node pkg="rviz"  type="rviz"  name="rviz"  required="true" args="-d $(find smartcar_description)/urdf/lc_1.rviz" />
    <!--<node pkg="map_server"  type="map_server"  name="map_server"  args="$(find test)/maps/lc_map.yaml" />-->
-   <include file="$(find test)/launch/move_base1.launch" />
+   <include file="$(find test)/launch/move_base_lc.launch" />
 <!--<include file="$(find test)/launch/amcl.launch" />-->
    <include file="$(find autolabor_pro1_driver)/launch/driver.launch" />
     <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch" />
