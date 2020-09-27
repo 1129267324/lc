@@ -2,11 +2,11 @@
 <launch>
   
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find test)/config_lc/move_base_params.yaml" command="load"/>    
-     <rosparam file="$(find test)/config_lc/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>    
-      <rosparam file="$(find test)/config_lc/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS" />    
-      <rosparam file="$(find test)/config_lc/costmap_global.yaml" command="load"  ns="global_costmap"/> 
-      <rosparam file="$(find test)/config_lc/costmap_local.yaml" command="load" ns="local_costmap" /> 
+    <rosparam file="$(find test)/param_no_map/move_base_params.yaml" command="load"/>    
+     <rosparam file="$(find test)/param_no_map/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>    
+      <rosparam file="$(find test)/param_no_map/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS" />    
+      <rosparam file="$(find test)/param_no_map/costmap_global.yaml" command="load"  ns="global_costmap"/> 
+      <rosparam file="$(find test)/param_no_map/costmap_local.yaml" command="load" ns="local_costmap" /> 
   </node>
 
 </launch>
