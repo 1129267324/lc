@@ -1,0 +1,96 @@
+# 配置局部路径规划参数，dwa_local_planner是一个能够驱动底盘移动的控制器
+#该控制器连接了路径规划器和机器人
+#local planner主要有：dwa、trajectory、teb和eband等
+ #DWAPlannerROS:
+
+# Robot Configuration Parameters - stdr robot
+#acc_lim_x acc_lim_theta acc_lim_y 加速度限定值
+# x方向的加速度绝对值
+  acc_lim_x: 0.3  # maximum is theoretically 2.0
+# y方向的加速度绝对值,该值只有全向移动的机器人才需配置.
+  acc_lim_y: 0.0  # diff drive robot
+# 旋转加速度的绝对值.
+  acc_lim_th: 0.3
+  #max_trans_vel min_trans_vel 平移速度限定值
+# 平移速度最大值绝对值
+  max_trans_vel: 0 # 0.3 #choose slightly less than the base's capability
+# 平移速度最小值的绝对值
+  min_trans_vel: 0 # 0.1 #this is the min trans velocity when there is negligible rotational velocity
+  #max_vel_x min_vel_x max_vel_y min_vel_y速度限定值
+# :x方向最大速度的绝对值
+  max_vel_x: 0.3
+# x方向最小值绝对值,如果为负值表示可以后退.
+  min_vel_x: -0.1
+# y方向最大速度的绝对值.
+  max_vel_y: 0.0  #diff drive robot,don't need set vel_y
+# y方向最小速度的绝对值.
+  min_vel_y: 0.0
+  #max_rot_vel min_rot_vel 旋转的速度限定值
+# 最大旋转速度的绝对值.
+  max_rot_vel: 0.5  #choose slightly less than the base's capability
+# 最小旋转速度的绝对值.
+  min_rot_vel: 0.1  #this is the min angular velocity when there is negligible translational velocity
+
+ 
+
+# Goal Tolerance Parameters
+#到达目标点的允许误差
+# 到达目标点时偏行角允许的误差，单位弧度.
+  yaw_goal_tolerance: 0.1  # 0.1 rad = 5.7 degree
+# 到达目标点时,在xy平面内与目标点的距离误差.
+  xy_goal_tolerance: 0.12
+# 设置为true,如果到达容错距离内,机器人就会原地旋转,即使转动是会跑出容错距离外.
+# 如果为true 当机器人到达目标点后通过旋转调整姿态（方向）后，偏离了目标点，也认为完成。这个实际应用中还是比较酷的
+  latch_xy_goal_tolerance: false
+# Forward Simulation Parameters
+# 向前仿真轨迹的时间.
+#模拟机器人以采样速度行走的时间，太小(<2)会导致行走不流畅，
+#特别在遇到障碍或狭窄的空间，因为没有足够多时间获取路径；太大(>5)会导致以僵硬的轨迹行走使得机器人不太灵活
+  sim_time: 2.0    # 1.7
+# 步长,轨迹上采样点之间的距离,轨迹上点的密集程度.
+  sim_granularity: 0.025
+# x方向速度空间的采样点数.
+  vx_samples: 6    # default 3
+#:y方向速度空间采样点数.
+  vy_samples: 1    # diff drive robot, there is only one sample
+# 旋转方向的速度空间采样点数.
+  vth_samples: 20  # 20
+# 发送给底盘控制移动指令的频率.
+  controller_frequency: 1  # 5.0
+
+ 
+
+# Trajectory Scoring Parameters
+#定义控制器与给定路径接近程度的权重.
+  path_distance_bias: 50 #  90      # 32.0  90.0  
+#定义控制器与局部目标点的接近程度的权重.
+  goal_distance_bias: 24.0      # 24.0
+#定义控制器躲避障碍物的程度.
+  occdist_scale: 1 # 0.3  # 1    #  0.3            # 0.01
+
+  forward_point_distance: 0.325 # 0.325
+  #为防止碰撞,机器人必须提前停止的时间长度.
+
+  stop_time_buffer: 0.2         # 0.2
+#启动机器人底盘的速度.
+  scaling_speed: 0.20           # 0.25
+# max_scaling_factor:最大缩放参数.
+  max_scaling_factor: 0.2       # 0.2
+#是否发布规划器在规划路径时的代价网格.如果设置为true,那么就会在~/cost_cloud话题上发布sensor_msgs/PointCloud2类型消息.
+  publish_cost_grid: false
+
+ 
+
+# Oscillation Prevention Parameters
+#机器人运动多远距离才会重置振荡标记.
+  oscillation_reset_dist: 0.05  # default 0.05
+
+ 
+
+# Global Plan Parameters
+#机器人前进是是否清除身后1m外的轨迹.
+  prune_plan:  false
+
+  # NavfnROS:
+  # allow_unknown: true # Specifies whether or not to allow navfn to create plans that traverse unknown space.
+  # default_tolerance: 0.1 # A tolerance on the goal point for the planner

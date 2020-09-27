@@ -1,0 +1,38 @@
+<launch>
+ <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    
+        <!--<rosparam file="$(find test)/param_sim_success/move_base_params.yaml" command="load" />
+        <rosparam file="$(find test)/param_sim_success/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find test)/param_sim_success/local_costmap_params.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find test)/param_sim_success/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>
+        <rosparam file="$(find test)/param_sim_success/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS"/>-->      
+
+       <!--缺点是规划的路径有点太靠近或者说逼近墙面等障碍物了，容易直接出现堵死的情况-->
+        <!--<rosparam file="$(find test)/param_sim_original/move_base_params.yaml" command="load" />
+        <rosparam file="$(find test)/param_sim_original/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find test)/param_sim_original/local_costmap_params.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find test)/param_sim_original/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>
+        <rosparam file="$(find test)/param_sim_original/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS"/>-->
+
+
+        <rosparam file="$(find test)/param/move_base_params.yaml" command="load" />
+        <rosparam file="$(find test)/param/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find test)/param/local_costmap_params.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find test)/param/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>
+        <rosparam file="$(find test)/param/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS"/>
+
+
+        <!--<rosparam file="$(find test)/param_autolabor/move_base_params.yaml" command="load" />
+        <rosparam file="$(find test)/param_autolabor/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find test)/param_autolabor/local_costmap_params.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find test)/param_autolabor/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>
+        <rosparam file="$(find test)/param_autolabor/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS"/>-->
+
+
+        <!--<rosparam file="$(find test)/config_lc/move_base_params.yaml" command="load" />
+        <rosparam file="$(find test)/config_lc/costmap_global.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find test)/config_lc/costmap_local.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find test)/config_lc/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>
+        <rosparam file="$(find test)/config_lc/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS"/>-->
+    </node>
+</launch>

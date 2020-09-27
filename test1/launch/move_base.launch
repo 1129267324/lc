@@ -1,0 +1,20 @@
+<launch>
+<node pkg="move_base" type="move_base" name="move_base" respawn="false" output="screen" clear_params="true">
+  <!-- 通用配置文件（全局） -->
+    <rosparam file="$(find test)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    
+    <!-- 通用配置文件（本地） -->
+	<rosparam file="$(find test)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    
+    <!-- 本地代价地图参数 -->
+    <rosparam file="$(find test)/config/local_costmap_params.yaml" command="load" />
+    
+    <!-- 全局代价地图参数 -->
+    <rosparam file="$(find test)/config/global_costmap_params.yaml" command="load" />
+    
+    <!-- 本地规划器 -->
+    <rosparam file="$(find test)/config/base_local_planner_params.yaml" command="load" />
+  </node>
+
+
+</launch>

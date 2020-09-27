@@ -1,0 +1,22 @@
+#base_global_planner: "global_planner/GlobalPlanner"
+#要与move_base一起使用的全局规划器插件的名称
+base_global_planner: "navfn/NavfnROS"
+#base_local_planner: "dwa_local_planner/DWAPlannerROS"
+#要与move_base一起使用的本地计划器插件的名称
+base_local_planner: "base_local_planner/TrajectoryPlannerROS"
+# Whether or not to enable the move_base recovery behaviors to attempt to clear out space.(bool, default: true)
+#是否启用move_base恢复行为以尝试清除空间。
+recovery_behavior_enabled: true
+#与move_base一起使用的恢复行为插件列表，请参阅pluginlib文档以获得更多关于插件的详细信息。当move_base不能按照指定的顺序找到有效的计划时，将运行这些行为。每次行为完成后，move_base将尝试制定计划。如果计划成功，move_base将继续正常运行。否则，将执行列表中的下一个恢复行为。
+recovery_behaviors:
+  - {name: conservative_reset, type: clear_costmap_recovery/ClearCostmapRecovery} 
+  - {name: rotate_recovery, type: rotate_recovery/RotateRecovery} 
+  - {name: aggressive_reset, type: clear_costmap_recovery/ClearCostmapRecovery}
+# The rate in Hz at which to run the control loop and send velocity commands to the base.(double, default: 20.0)
+#运行控制回路并向底座发送速度指令的频率(以赫兹计)。
+controller_frequency: 5.0
+
+
+
+
+

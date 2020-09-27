@@ -1,0 +1,24 @@
+<launch>
+    <param name="use_sim_time" value="false" />
+	<arg name="model" />
+	<arg name="gui" default="False" />
+    <param name="use_gui" value="$(arg gui)"/>
+    <!--运行"joint_state_publisher节点，发布机器人的关节状态-->
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>
+ <!--运行robot_state_publisher节点，发布tf-->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+    <param name="robot_description" textfile="$(find smartcar_description)/urdf/smartcar.urdf" />
+   <node pkg="rviz"  type="rviz"  name="rviz"  required="true" args="-d $(find smartcar_description)/urdf/lc.rviz" />
+   <node pkg="map_server"  type="map_server"  name="map_server"  args="$(find test)/maps/lc_map.yaml" />
+
+     <node pkg="autolabor_fake" type="autolabor_fake_node" name="autolabor_driver" >
+      <remap from="/autolabor/cmd_vel" to="cmd_vel" />
+      <remap from="/autolabor/odom" to="odom" />
+      <param name="cmd_timeout" value="0.5" />
+    </node>
+
+     <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0.0 0.20 0.0 0.0 0.0 /base_link /lidar 10" />
+    
+</launch>
+

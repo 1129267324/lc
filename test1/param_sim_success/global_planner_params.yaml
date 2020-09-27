@@ -1,0 +1,36 @@
+# ns : GlobalPlanner
+
+# Specifies whether or not to allow the planner to create plans that traverse unknown space. NOTE: if you are using a layered costmap_2d costmap with a voxel or obstacle layer, you must also set the track_unknown_space param for that layer to be true, or it will convert all your unknown space to free space (which planner will then happily go right through). (bool, default: true)
+# 是否允许规划器规划穿过未知区域的路径,只设计该参数为true还不行,
+# 还要在costmap_commons_params.yaml中设置track_unknown_space参数也为true才行。
+
+
+allow_unknown: true
+
+# A tolerance on the goal point for the planner. The planner will attempt to create a plan that is as close to the specified goal as possible but no further than default_tolerance away. (double, default: 0.0)
+#当目标点为障碍时，规划可以有一定的允许误差
+
+# 当设置的目的地被障碍物占据时,需要以该参数为半径寻找到最近的点作为新目的地点.
+default_tolerance: 0.0
+
+# Specifies whether or not to visualize the potential area computed via a PointCloud2. (bool, default: false)
+# 是否显示从PointCloud2计算得到的势区域
+visualize_potential: false
+
+# If true, use dijkstra's algorithm. Otherwise, A*. (bool, default: true)
+#设置为true,将使用dijkstra算法,否则使用A*算法.
+#设置为false后，发现2D nav goal不起作用了，实际查阅发现没有A*算法的src文件
+use_dijkstra: true
+
+# If true, use the quadratic approximation of the potential. Otherwise, use a simpler calculation. (bool, default: true)
+# 设置为true,将使用二次函数近似函数,否则使用更加简单的计算方式,这样节省硬件计算资源.
+use_quadratic: true
+
+# If true, create a path that follows the grid boundaries. Otherwise, use a gradient descent method. (bool, default: false)
+#如果设置为true,则会规划一条沿着网格边界的路径,偏向于直线穿越网格,否则将使用梯度下降算法,路径更为光滑点.
+#设置为true，发现2D nav goal不起作用了
+use_grid_path: false
+
+# If for some reason, you want global_planner to exactly mirror the behavior of navfn, set this to true (and use the defaults for the other boolean parameters) (bool, default: false)
+#但是需要注意navfn是非常旧的ROS系统中使用的,现在已经都用global_planner代替navfn了,所以不建议设置为true.
+old_navfn_behavior: false

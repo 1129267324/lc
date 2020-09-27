@@ -1,0 +1,76 @@
+# 1 确定全局代价地图需要在哪个参考系下运行
+global_frame: odom
+# 2 全局地图信息更新的频率，单位HZ
+update_frequency: 5.0  # Higher for costmap_local?
+#3  设置代价地图发布可视化信息的频率
+publish_frequency: 1.0
+# 4  设置机器人在移动过程中是否需要滚动窗口，以保持机器人处于中心位置，设置为false，发现不能选择目标点了
+rolling_window: true # false #true
+# 5 决定代价地图是否需要根据map_server提供的地图信息进行初始化，若不需要，将其设置为false
+static_map: false # true 
+# 6 设置代价地图的长，高与分辨率
+# The width of the map in meters.(int, default: 10)
+width: 100
+# The height of the map in meters.(int, default: 10)
+height: 100
+resolution: 0.05
+# 7 机器人在二维地图上的占用面积
+footprint: [[0.40, 0.35], [0.40, -0.35], [-0.40, -0.35], [-0.40, 0.35]]
+# 8 设置障碍物的膨胀参数，即机器人应该与障碍物保持的最小安全距离，单位是米
+# 膨胀层，用于在障碍物外标记一层危险区域，在路径规划时需要避开该区域
+inflation:
+# 机器人与障碍物保持的最小距离，inflation_radius:膨胀半径，膨胀层会把障碍物代价膨胀直到该半径为止，一般将该值设置为机器人底盘的直径大小。
+# 在这里，我们设置机器人的占用面积或机器人的半径是圆形。在指定占地面积的情况下，假设机器人的中心处于（0.0,0.0），并且支持顺时针和逆时针规格。
+# 我们还将设定代价地图的膨胀半径。膨胀半径应设定为在代价地图的与障碍物保持安全的最大距离。例如，将膨胀半径设定为0.55米，意味着机器人针对相同的障碍物获取的所有路径都保持距离障碍物0.55米或更远。
+# 如果你的机器人不能很好地通过窄门或其它狭窄的地方，则稍微减小这个值，相反地，如果机器人不断地撞到东西，则尝试增大这个值。
+    inflation_radius: 0.05
+# 此处若设置为false,那么地图上代价值就只分为致命碰撞与自由区域两种
+# 设置为true，就表示分为致命碰撞，自由区域，未知区域三种
+# 若需要将一些未探索的未知区域也参与到路径规划，就将其设置为false，不过一般是true
+track_unknown_space: true # false
+
+footprint_padding: 0.01
+# 机器人的基坐标系
+robot_base_frame: base_link
+# 修改内容1：
+# 地图更新频率与发布频率均为2.0时发现，虽然局部地图与全局地图都在动，但是全局地图有重影，
+# 像多个屏幕卡住的感觉
+
+# 定义了tf转换所能容忍的最大延时，若tf树没有以期望速度被更新，那么导航功能包将会让机器人停止
+transform_tolerance: 0.5
+
+plugins:
+  - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
+  - {name: inflation,                 type: "costmap_2d::InflationLayer"}
+
+# used for obstacle_layer, 3D->voxel 2D->other
+map_type: costmap
+
+# Layer definitions
+# 静态地图层，基本上不变的图层，即SLAM中构建的静态地图层
+static:
+    map_topic: /map
+    subscribe_to_updates: true
+    # enabled: false
+# 默认障碍物层维护的是三维信息，障碍地图层，用于动态记录传感器感知到的障碍物信息
+obstacles_laser:
+    # 机器人监测障碍物的最大范围，若设置为2.5，则表示2.5m范围内检测到的障碍物信息才会在地图中进行更新
+    obstacle_range: 2.5  # 3.0?
+    # 设置机器人检测自由空间的最大范围，若设置为3，表示3m范围内，机器人将根据传感器信息清除范围内的自由空间
+   # 这个范围内不存在的障碍物都会被清除
+    raytrace_range: 4.0  # 4.0?
+    # 代价地图会自动订阅传感器发布的主题并基于数据进行自我更新
+    # 列出了代价地图需要关注的所有传感器信息，每个传感器信息都会在后面详细列出，可用逗号进行分割，此处观察激光数据
+    observation_sources: laser
+    # 左边表示传感器的参考系名称，data_type表示激光数据使用的消息类型；marking与clearing表示是否需要传感器的实时信息
+    # 来添加或清除代价地图中的障碍物信息
+    laser: {data_type: LaserScan,
+     clearing: true, 
+     marking: true, 
+     topic: scan, 
+     inf_is_valid: true}
+
+max_obstacle_height: 2.0 # 最大障碍物高度
+min_obstacle_height: 0.0 # 最小障碍物高度
+
+

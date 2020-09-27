@@ -1,0 +1,23 @@
+<!--基于真实机器人与velodyne进行gmapping建图-->
+<launch>
+    <param name="use_sim_time" value="false" />
+	<arg name="model" />
+	<arg name="gui" default="False" />
+    <param name="use_gui" value="$(arg gui)"/>
+    <!--运行"joint_state_publisher节点，发布机器人的关节状态-->
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>
+ <!--运行robot_state_publisher节点，发布tf-->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+    <param name="robot_description" textfile="$(find smartcar_description)/urdf/smartcar.urdf" />
+   <node pkg="rviz"  type="rviz"  name="rviz"  required="true" args="-d $(find smartcar_description)/urdf/lc.rviz" />
+ 
+  <!--运行autolabor ros驱动节点-->
+   <include file="$(find autolabor_pro1_driver)/launch/driver.launch" />
+   <!--加入真实激光雷达数据-->
+    <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch" />
+    <!--进行tf转换-->
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_velodyne" args="0.0 12.5 24.5 0 0 0 /base_link /lvelodyne 10" />
+    
+</launch>
+

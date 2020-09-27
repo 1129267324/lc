@@ -1,0 +1,69 @@
+# 指定用于move_base的全局规划器插件名称.全局规划器，用于规划全局路径
+base_global_planner: "global_planner/GlobalPlanner"
+# 指定用于move_base的局部规划器插件名称.局部规划器，用于运动过程中的动态避障
+base_local_planner: "dwa_local_planner/DWAPlannerROS"
+#TrajectoryPlannerROS不在mbot_navigation中，需要单独下载
+#base_local_planner: "dwa_local_planner/TrajectoryPlannerROS"
+#恢复模块，一个是恢复行为rotate_recovery，一个是地图清理clear_costmap_recovery，
+#通常使用默认值即可。注意：当全局路径规划无法到达目标点时，才会执行这个恢复模块
+recovery_behaviors:
+  - {name: conservative_reset, type: clear_costmap_recovery/ClearCostmapRecovery} 
+  - {name: rotate_recovery, type: rotate_recovery/RotateRecovery} 
+  - {name: aggressive_reset, type: clear_costmap_recovery/ClearCostmapRecovery}
+# The rate in Hz at which to run the global planning loop. If the frequency is set to 0.0, the global planner will only run when a new goal is received or the local planner reports that its path is blocked.(double, default: 0.0)
+# 全局规划操作的执行频率.如果设置为0.0,则全局规划器仅
+#       在接收到新的目标点或者局部规划器报告路径堵塞时才会重新执行规划操作.
+#全局规划器的执行频率，如果为0则只有出现新的目标点，才会重新规划
+planner_frequency: 2.0
+
+# The rate in Hz at which to run the control loop and send velocity commands to the base.(double, default: 20.0)
+# 向底盘控制移动话题cmd_vel发送命令的频率,将5修改为10.这个速度由base_local_planner计算
+controller_frequency: 10.0  #5.0
+
+# How long the planner will wait in seconds in an attempt to find a valid plan before space-clearing operations are performed.(double, default: 5.0)
+#进行全局规划的时间间隔，如果超时则认为规划失败
+planner_patience: 5.0
+
+# How long the controller will wait in seconds without receiving a valid control before space-clearing operations are performed.(double, default: 15.0)
+# 在空间清理操作执行前,控制器花多长时间等有效控制下发.
+# 在空间清理操作执行前,控制器花多长时间等有效控制下发.
+controller_patience: 3.0
+
+# Whether or not to enable the move_base recovery behaviors to attempt to clear out space.(bool, default: true)
+##确定机器人在尝试清理空间时是否尝试原地旋转。是否使用恢复模块，默认值为true
+recovery_behavior_enabled: true
+
+# Determines whether or not the robot will attempt an in-place rotation when attempting to clear out space. Note: This parameter is only used when the default recovery behaviors are in use, meaning the user has not set the recovery_behaviors parameter to anything custom.(bool, default: true)
+#是否允许旋转恢复行为，默认为truez
+#确定机器人在尝试清理空间时是否尝试原地旋转。注意:此参数仅在使用默认恢复行为时使用，这意味着用户还没有将recovery_behavior参数设置为任何自定义值。(bool,默认值:true)
+# clearing_rotation_allowed: true
+clearing_rotation_allowed: false
+# Determines whether or not to shutdown the costmaps of the node when move_base is in an inactive state (bool, default: false)
+# 当move_base在不活动状态时,是否关掉costmap.是否关闭代价地图的加载
+# 将原先的true修改为false
+shutdown_costmaps: false
+
+# How long in seconds to allow for oscillation before executing recovery behaviors. A value of 0.0 corresponds to an infinite timeout. (double, default: 0.0)
+# 执行修复机制前,允许振荡的时长.
+oscillation_timeout: 5.0
+
+# How far in meters the robot must move to be considered not to be oscillating. Moving this far resets the timer counting up to the ~oscillation_timeout (double, default: 0.5)
+# 来回运动在多大距离以上不会被认为是振荡.
+#机器人必须移动多远（以米计）才能被视为不摆动。
+#如果出现摆动则说明全局规划失败，那么将在超时后执行恢复模块。
+oscillation_distance: 0.3
+
+# How many times to allow for planning retries before executing recovery behaviors. A value of -1.0 corresponds to an infinite retries.(int32_t, default: -1)
+#在执行恢复行为之前允许计划重试的次数.默认为-1，表示全局规划失败后立即执行恢复模块。
+max_planning_retries: -1
+
+#############################
+# plug for recovery_behaviors
+#############################
+conservative_reset:
+# The radius away from the robot in meters outside which obstacles will be removed from the costmaps when they are reverted to the static map.
+    reset_distance: 1.0
+
+aggressive_reset:
+# The radius away from the robot in meters outside which obstacles will be removed from the costmaps when they are reverted to the static map.
+    reset_distance: 0.0
