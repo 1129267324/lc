@@ -3,38 +3,67 @@
     <arg name="scan_topic" default="scan"/>
 
     <node pkg="amcl" type="amcl" name="amcl" clear_params="true">
+    <!--当设置为true时，amcl将订阅地图话题，而不是通过服务调用接收地图-->
         <param name="use_map_topic" value="$(arg use_map_topic)"/>
         <!-- Publish scans from best pose at a max of 10 Hz -->
+        <!--模型选择，diff,omni,diff-corrected或omni-corrected-->
         <param name="odom_model_type" value="diff"/>
+        <!--平移相关的噪声参数，仅在模型omni中使用-->
         <param name="odom_alpha5" value="0.1"/>
+        <!--可视化时，发布信息的最大速率，-1表示禁用-->
         <param name="gui_publish_rate" value="10.0"/>
+        <!--更新滤波器时要在每次扫描中使用多少均匀间隔的光束-->
         <param name="laser_max_beams" value="60"/>
+        <!--最大扫描范围-->
         <param name="laser_max_range" value="12.0"/>
+        <!--允许的最少粒子数-->
         <param name="min_particles" value="500"/>
+        <!--允许的最多粒子数-->
         <param name="max_particles" value="2000"/>
+        <!--真实分布与估计分布之间的最大误差-->
         <param name="kld_err" value="0.05"/>
+        <!--（1-p）的上标准正常分位数，其中p是估计分布误差小于kld_err的概率-->
         <param name="kld_z" value="0.99"/>
+        <!--根据机器人运动的旋转分量，指定机器人旋转估计中的预期噪声-->
         <param name="odom_alpha1" value="0.2"/>
+        <!--根据机器人运动的平移分量，指定机器人旋转估计中的预期噪声-->
         <param name="odom_alpha2" value="0.2"/>
         <!-- translation std dev, m -->
+        <!--根据机器人运动的平移分量，指定机器人平移估计中的预期噪声-->
         <param name="odom_alpha3" value="0.2"/>
+        <!--根据机器人运动的旋转分量，指定机器人平移估计中的预期噪声-->
         <param name="odom_alpha4" value="0.2"/>
+        <!--模型z_hit部分的混合参数-->
         <param name="laser_z_hit" value="0.5"/>
+        <!--模型z_short部分的混合参数-->
         <param name="laser_z_short" value="0.05"/>
+        <!--模型z_max部分的混合参数-->
         <param name="laser_z_max" value="0.05"/>
+        <!--模型z_rand部分的混合-->
         <param name="laser_z_rand" value="0.5"/>
+        <!--模型z_hit部分中使用的高斯模型的标准偏差-->
         <param name="laser_sigma_hit" value="0.2"/>
+        <!--使用z_short部分的指数衰减参数-->
         <param name="laser_lambda_short" value="0.1"/>
+        <!--模型选择-->
         <param name="laser_model_type" value="likelihood_field"/>
         <!-- <param name="laser_model_type" value="beam"/> -->
+        <!--地图上测量障碍物膨胀的最大距离-->
         <param name="laser_likelihood_max_dist" value="2.0"/>
+        <!--执行一次滤波器更新所需的平移距离-->
         <param name="update_min_d" value="0.25"/>
+        <!--执行一次滤波器更新所需的旋转角度-->
         <param name="update_min_a" value="0.2"/>
+        <!--里程计的坐标系-->
         <param name="odom_frame_id" value="odom"/>
+        <!--重采样之前滤波器的更新次数-->
         <param name="resample_interval" value="1"/>
         <!-- Increase tolerance because the computer can get quite busy -->
+        <!--发布变换的时间，以指示此变换在未来有效-->
         <param name="transform_tolerance" value="1.0"/>
+        <!--慢速平均权重滤波器的指数衰减率，用于决定何时通过添加随即姿态进行恢复操作，0表禁用-->
         <param name="recovery_alpha_slow" value="0.0"/>
+        <!--快速平均权重滤波器的指数衰减率，用于决定何时通过添加随即姿态进行恢复操作，0表禁用-->
         <param name="recovery_alpha_fast" value="0.0"/>
         <remap from="scan" to="$(arg scan_topic)"/>
     </node>
