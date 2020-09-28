@@ -14,7 +14,7 @@ roslaunch test1 navigation1.launch
 fixed frame: map
 
 2 无图避障：直接基于小车驱动autolabor，velodyne与move_base包进行避障，简称无图下的避障，去除了map与amcl，从官网move_base介绍中可以发现，其属于可选项
-1)其对应导入的move_base中的参数为test包中的param_no_map
+1)其对应导入的move_base中的参数为test包中的param_no_map,后期发现修改该参数后，2D nav goal不起作用，因此还是基于参数config作为无图的配置
 roslaunch test1 navigation11.launch
 2) 启动后rviz界面修改
 fixed frame: odom
